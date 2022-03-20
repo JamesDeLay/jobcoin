@@ -4,12 +4,12 @@ import styled from 'styled-components' ;
 const CardContainer = styled.article`
     border: 1px solid #dadada;
     background-color: #fff;
-    padding-bottom: 2rem;
+    /* padding-bottom: 2rem; */
     /* padding-top: 2rem; */
+    height: 100%;
     border-radius: 5px;
     .card-children {
         padding: 1rem;
-        height: 100%;
     }
 `
 

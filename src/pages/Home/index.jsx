@@ -5,7 +5,7 @@ import styled from "styled-components";
 import ApiService from '../../api';
 import { useAlert } from 'react-alert';
 import Card from '../../components/Card';
-import LineChart from '../../components/LineChart';
+import TransactionsChart from '../../components/TransactionsChart';
 
 const HomePageHeader = styled.section`
     background: #003b6D;
@@ -19,32 +19,40 @@ const HomePageHeader = styled.section`
 const HomeContainer = styled.div`
     display: flex;
     flex-direction: column;
+    height: 100%;
     .welcome-msg {
         text-align: center;
         font-size: 1.75rem;
         padding: 1rem;
     }
     .panel-container {
-        display: flex;
-        padding: 1rem;
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: 2fr 1fr;
+        height: 100%
     }
     .balance {
         font-size: 1.25rem;
         text-align: center;
         margin-top: 2rem;
     }
+
+    .chart-container {
+        width: 1000px;
+        display: flex;
+        justify-content: center;
+        margin: auto;
+    }
 `;
 
-const RightPanel = styled.section`
-    width: 70%;
-    padding-left: 1rem;
-`;
-
-const LeftPanel = styled.section`
+const BottomPanel = styled.section`
     display: grid;
-    grid-template-rows: repeat(3, 1fr);
-    row-gap: 1rem;
-    width: 30%;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-column-gap: 1rem;
+    height: 100%;
+    .card-container {
+        padding: 1rem;
+    }
 `;
 
 const SendForm = styled.form`
@@ -60,12 +68,15 @@ const SendForm = styled.form`
 
 //  Home 
 function Home() {
+
+    // State & Misc.
     const ctx = useContext(store)
     const navigate = useNavigate()
     const alert = useAlert()
     const [recipientAddress, setRecipientAddress] = useState('')
     const [quantity, setQuantity] = useState('');
 
+    // Methods
     const handleSendJobcoin = async (e) => {
         e.preventDefault()
 
@@ -87,8 +98,8 @@ function Home() {
            const updatedUserInfo = await ApiService.fetchAddressInfo(ctx.userAddress)
            ctx.setUserInfo(updatedUserInfo)
             // Fetch & update transaction history
-            const updatedTransactionHistory = await ApiService.fetchTransactionHistory()
-            ctx.setTransactionHistory(updatedTransactionHistory)
+           const updatedTransactionHistory = await ApiService.fetchTransactionHistory()
+           ctx.setTransactionHistory(updatedTransactionHistory)
            setQuantity('')
            setRecipientAddress('')
            alert.success('Jobcoin sent successfully')
@@ -103,6 +114,7 @@ function Home() {
         navigate('/login')
     }
 
+    // Lifecycles
     useEffect(() => {
         const fetchTransactions = async () => {
             try {
@@ -129,28 +141,32 @@ function Home() {
             <button onClick={handleSignOut}>Sign Out</button>
             </HomePageHeader>
             <div className='panel-container'>
-                <LeftPanel>
+                <div className="chart-container">
+                    <TransactionsChart></TransactionsChart>
+                </div>
+                <BottomPanel>
+                    <div className='card-container'>
                     <Card title={"Current Jobcoin Balance"}>
                         <p className='balance'>{ctx.userInfo.balance || "N/A"}</p>
                     </Card>
-                    <Card title={"Send Jobcoin"}>
-                        <SendForm onSubmit={handleSendJobcoin}>
-                            <label>Recipient</label>
-                            <input placeholder='Enter recipient address...' value={recipientAddress} onChange={(e) => setRecipientAddress(e.target.value)}/>
-                            <label>Quantity</label>
-                            <input type="text" value={quantity} placeholder='Enter quantity...' onChange={(e) => setQuantity(e.target.value)}/>
-                            <button onChange={handleSendJobcoin}>Send</button>
-                        </SendForm>
-                    </Card>
-                    <Card title={`${ctx.userAddress}'s Transaction History`}>
-                        <ul>
-                            {}
-                        </ul>
-                    </Card>
-                </LeftPanel>
-                <RightPanel>
-                    <LineChart></LineChart>
-                </RightPanel>
+                    </div>
+                    <div className='card-container'>
+                        <Card title={"Send Jobcoin"}>
+                            <SendForm onSubmit={handleSendJobcoin}>
+                                <label>Recipient</label>
+                                <input placeholder='Enter recipient address...' value={recipientAddress} onChange={(e) => setRecipientAddress(e.target.value)}/>
+                                <label>Quantity</label>
+                                <input type="text" value={quantity} placeholder='Enter quantity...' onChange={(e) => setQuantity(e.target.value)}/>
+                                <button onChange={handleSendJobcoin}>Send</button>
+                            </SendForm>
+                        </Card>
+                    </div>
+                    <div className='card-container'>
+                        <Card title={`${ctx.userAddress}'s Transaction History`}>
+                            
+                        </Card>
+                    </div>
+                </BottomPanel>
             </div>
         </HomeContainer>
     )

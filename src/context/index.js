@@ -11,7 +11,7 @@ const GlobalStore = ({ children }) => {
     setUserInfo({});
     setTransactionHistory([]);
   }
-  
+
   return (
     <Store.Provider
       value={{
