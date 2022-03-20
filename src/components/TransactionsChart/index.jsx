@@ -42,10 +42,14 @@ export default function TransactionsChart() {
     
     // Sort transactions by datetime going back in time
     const sortedTransactions = ctx?.userInfo?.transactions?.reverse()
-    console.log({sortedTransactions})
+    let balance = Number(ctx.userInfo.balance)
     
+    balanceTimeseries.push(balance)
+    const date = new Date()
+      const tsLabel = `${date.getMonth()+1}/${date.getDate()}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
+      datetimes.push(tsLabel)
+    datetimes.push()
     
-    let balance = ctx.userInfo.balance
     sortedTransactions.forEach(({fromAddress, amount, timestamp}) => {
       // console.log(fromAddress)
       // addresses.add(toAddress)
@@ -62,22 +66,19 @@ export default function TransactionsChart() {
     })
     console.log(balance)
     
-    // const uniqueAddresses = []
-    // const addressIter = addresses.entries()
-    // for (const addr of addressIter) {
-    //   uniqueAddresses.push(addr[0])
-    // }
+
     setChartData(balanceTimeseries.reverse())
-    setChartLabels(datetimes)
+    setChartLabels(datetimes.reverse())
     
   }
 
     useEffect(() => {
         
         console.log('Label/Data Change')
-        // console.log(transactions)
-        convertTransactionsToChartData()
-    }, [ctx.userInfo.transactions]);
+        if(ctx?.userInfo?.transactions?.length) {
+          convertTransactionsToChartData()
+        }
+    }, [ctx.userInfo]);
 
     const options = {
         responsive: true,
