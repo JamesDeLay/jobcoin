@@ -47,7 +47,7 @@ const HomeContainer = styled.div`
 
 const BottomPanel = styled.section`
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
     grid-column-gap: 1rem;
     height: 100%;
     .card-container {
@@ -119,8 +119,7 @@ function Home() {
         const fetchTransactions = async () => {
             try {
                 const transactions = await ApiService.fetchTransactionHistory()
-                console.log(transactions)
-            
+                ctx.setTransactionHistory(transactions)
             } catch (error) {
                 console.error(error)
                 alert.error('Unable to fetch transactions')
@@ -142,7 +141,7 @@ function Home() {
             </HomePageHeader>
             <div className='panel-container'>
                 <div className="chart-container">
-                    <TransactionsChart></TransactionsChart>
+                    <TransactionsChart transactions={ctx.userInfo.transactions}></TransactionsChart>
                 </div>
                 <BottomPanel>
                     <div className='card-container'>
@@ -159,11 +158,6 @@ function Home() {
                                 <input type="text" value={quantity} placeholder='Enter quantity...' onChange={(e) => setQuantity(e.target.value)}/>
                                 <button onChange={handleSendJobcoin}>Send</button>
                             </SendForm>
-                        </Card>
-                    </div>
-                    <div className='card-container'>
-                        <Card title={`${ctx.userAddress}'s Transaction History`}>
-                            
                         </Card>
                     </div>
                 </BottomPanel>
