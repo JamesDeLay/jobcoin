@@ -17,23 +17,13 @@ export default {
     overlay: '#F4F4F4',
   },
   fonts: {
-    header: 'Bower-Bold',
-    subHeader: 'TheinhardtPan-Medium',
-    body: 'TheinhardtPan-Regular',
-    light: 'TheinhardtPan-Light',
+    header: 'Montserrat',
+    body: 'Roboto',
     sizes: {
       xl: '3rem',
       lg: '1.5rem',
       md: '1rem',
       sm: '.75rem',
     },
-  },
-  spacers: {
-    xxl: '3rem',
-    xl: '1.5rem',
-    lg: '1.25rem',
-    md: '1rem',
-    sm: '.5rem',
-    xs: '.25rem',
   },
 };
