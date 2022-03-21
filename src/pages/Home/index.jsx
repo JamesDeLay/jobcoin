@@ -98,6 +98,7 @@ function Home() {
             // Fetch & update transaction history
            const updatedTransactionHistory = await ApiService.fetchTransactionHistory()
            ctx.setTransactionHistory(updatedTransactionHistory)
+            // Clear state
            setQuantity('')
            setRecipientAddress('')
            alert.success('Jobcoin sent successfully')
