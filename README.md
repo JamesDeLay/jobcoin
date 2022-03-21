@@ -1,5 +1,9 @@
 # Jobcoin App
 
+## Docs
+- Color scheme: https://www.schemecolor.com/blue-gray-color-scheme.php
+- ChartJS Docs: https://www.chartjs.org/docs/latest/
+- React ChartJS Wrapper Lib: https://github.com/reactchartjs/react-chartjs-2
 ## Development
 
 - `npm install` deps
