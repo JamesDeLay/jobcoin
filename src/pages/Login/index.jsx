@@ -8,7 +8,16 @@ import styled from "styled-components";
 const StyledLoginWrapper = styled.div`
     height: 100vh;
     width: 100vw;
+    position: relative;
 `;
+
+const Overlay = styled.div`
+width: 100%;
+height: 100%;
+background: #003b6d;
+clip-path: polygon(0 0, 0% 100%, 100% 100%);
+z-index: 1;
+`
 
 const StyledLoginForm = styled.form`
     width: 35%;
@@ -25,14 +34,15 @@ const StyledLoginForm = styled.form`
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    z-index: 2;
     label {
-        font-family: 'Roboto', sans-serif;
+        font-family: sans-serif;
+        font-size: 18px;
         margin-bottom: 1rem;
     }
     button {
         margin-top: 1rem;
     }
-
     input {
         width: 300px;
     }
@@ -68,7 +78,6 @@ function Login() {
     }
     
     // Lifecycles
-
     return (
         <StyledLoginWrapper>
             <StyledLoginForm>
@@ -81,6 +90,7 @@ function Login() {
                 />
                 <button onClick={(e) => handleLogin(e)} >Login</button>
             </StyledLoginForm>
+            <Overlay />
         </StyledLoginWrapper>
     )
 }

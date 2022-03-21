@@ -5,7 +5,7 @@ import styled from "styled-components";
 import ApiService from '../../api';
 import { useAlert } from 'react-alert';
 import Card from '../../components/Card';
-import TransactionsChart from '../../components/TransactionsChart';
+import TransactionHistoryChart from '../../components/TransactionHistoryChart';
 
 const HomePageHeader = styled.section`
     background: #003b6D;
@@ -25,11 +25,12 @@ const HomeContainer = styled.div`
         font-size: 1.75rem;
         padding: 1rem;
     }
-    .panel-container {
+    .grid-container {
         display: grid;
-        grid-template-columns: 1fr;
-        grid-template-rows: 2fr 1fr;
-        height: 100%
+        padding: 1rem;
+        grid-template-columns: 1fr 3fr;
+        grid-template-rows: 1fr 1fr;
+        row-gap: 2rem;
     }
     .balance {
         font-size: 1.25rem;
@@ -38,20 +39,17 @@ const HomeContainer = styled.div`
     }
 
     .chart-container {
-        width: 1000px;
+        width: 700px;
         display: flex;
+        flex-direction: column;
         justify-content: center;
         margin: auto;
-    }
-`;
-
-const BottomPanel = styled.section`
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-column-gap: 1rem;
-    height: 100%;
-    .card-container {
-        padding: 1rem;
+        .title {
+            font-size: 18px;
+            text-align: center;
+            font-family: sans-serif;
+            margin-bottom: 1rem;
+        }
     }
 `;
 
@@ -139,28 +137,32 @@ function Home() {
             <h1 className='welcome-msg'>Welcome, {ctx.userAddress}</h1>
             <button onClick={handleSignOut}>Sign Out</button>
             </HomePageHeader>
-            <div className='panel-container'>
-                <div className="chart-container">
-                    <TransactionsChart transactions={ctx.userInfo.transactions}></TransactionsChart>
-                </div>
-                <BottomPanel>
-                    <div className='card-container'>
+            <div className='grid-container'>
+                <div className='card-container'>
                     <Card title={"Current Jobcoin Balance"}>
                         <p className='balance'>{ctx.userInfo.balance || "N/A"}</p>
                     </Card>
-                    </div>
-                    <div className='card-container'>
-                        <Card title={"Send Jobcoin"}>
-                            <SendForm onSubmit={handleSendJobcoin}>
-                                <label>Recipient</label>
-                                <input placeholder='Enter recipient address...' value={recipientAddress} onChange={(e) => setRecipientAddress(e.target.value)}/>
-                                <label>Quantity</label>
-                                <input type="text" value={quantity} placeholder='Enter quantity...' onChange={(e) => setQuantity(e.target.value)}/>
-                                <button onChange={handleSendJobcoin}>Send</button>
-                            </SendForm>
-                        </Card>
-                    </div>
-                </BottomPanel>
+                </div>
+                <div className="chart-container">
+                    <h1 className='title'>{ctx.userAddress}&#39;s Credits Since Inception</h1>
+                    <TransactionHistoryChart isCreditChart={true}></TransactionHistoryChart>
+                </div>
+                <div className='card-container'>
+                    <Card title={"Send Jobcoin"}>
+                        <SendForm onSubmit={handleSendJobcoin}>
+                            <label>Recipient</label>
+                            <input placeholder='Enter recipient address...' value={recipientAddress} onChange={(e) => setRecipientAddress(e.target.value)}/>
+                            <label>Quantity</label>
+                            <input type="text" value={quantity} placeholder='Enter quantity...' onChange={(e) => setQuantity(e.target.value)}/>
+                            <button onChange={handleSendJobcoin}>Send</button>
+                        </SendForm>
+                    </Card>
+                </div>
+                
+                <div className="chart-container">
+                    <h1 className='title'>{ctx.userAddress}&#39;s Debits Since Inception</h1>
+                    <TransactionHistoryChart></TransactionHistoryChart>
+                </div>
             </div>
         </HomeContainer>
     )
